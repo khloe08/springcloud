@@ -1,12 +1,36 @@
 spring:
   application:
     name: product
+  profiles:
+    active: local
+  config:
+    import: "configserver:"
+  cloud:
+    bus:
+      enable: false
+      destination: springCloudBus
+    config:
+      uri: http://localhost:18080
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 
 server:
-  port: 19092
+  port: 8888
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:19090/eureka/
+
+message: default message
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: busrefresh   #refresh /bus/refresh 엔드포인트가 활성화되어 POST 요청을 처리

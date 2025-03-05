@@ -17,11 +17,33 @@ spring:
           uri: lb://product  # 'product-service'라는 이름으로 로드 밸런싱된 서비스로 라우팅
           predicates:
             - Path=/product/**  # /product/** 경로로 들어오는 요청을 이 라우트로 처리
+        - id: auth-service  # 라우트 식별자
+          uri: lb://auth-service  # 'product-service'라는 이름으로 로드 밸런싱된 서비스로 라우팅
+          predicates:
+            - Path=/auth/**  # /product/** 경로로 들어오는 요청을 이 라우트로 처리
       discovery:
         locator:
           enabled: true  # 서비스 디스커버리를 통해 동적으로 라우트를 생성하도록 설정
+  bus:
+    enabled: true  # Spring Cloud Bus 활성화
+    rabbitmq:
+      host: localhost  # RabbitMQ 서버 호스트
+      port: 5672  # RabbitMQ 기본 포트
+      username: guest  # RabbitMQ 기본 사용자명
+      password: guest  # RabbitMQ 기본 비밀번호
+      virtual-host: /  # RabbitMQ 기본 가상 호스트
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:19090/eureka/  # Eureka 서버의 URL을 지정
+
+service:
+  jwt:
+    secret-key: "401b09eab3c013d4ca54922bb802bec8fd5318192b0a75f201d8b3727429080fb337591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
