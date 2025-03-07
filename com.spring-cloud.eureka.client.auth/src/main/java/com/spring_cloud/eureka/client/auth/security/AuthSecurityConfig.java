@@ -9,7 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,14 +33,9 @@ public class AuthSecurityConfig {
     private final JwtUtil jwtUtil;
     private final JwtProperties jwtProperties;
     private final RedisService redisService;
+    private final UserDetailsService userDetailsService;
+    //private final AuthenticationConfiguration authenticationConfiguration;
 
-
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-        throws Exception {
-        return configuration.getAuthenticationManager();
-    }
 
 
     @Bean
@@ -47,13 +43,27 @@ public class AuthSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+    AuthenticationManager authenticationManager() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
+    }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(
+            jwtUtil,jwtProperties,redisService);
+        filter.setAuthenticationManager(authenticationManager());
+        return filter;
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+
         http.csrf(AbstractHttpConfigurer::disable);
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(jwtUtil, jwtProperties, redisService, authenticationManager);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/auth/signIn");
 
         http.sessionManagement((sessionManagement) ->
             sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -69,7 +79,8 @@ public class AuthSecurityConfig {
                 .anyRequest().authenticated()
         );
 
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 
         return http.build();

@@ -12,7 +12,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class JwtUtil {
         this.jwtProperties = jwtProperties;
         this.redisService = redisService;
     }
+
 
     private SecretKey getSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecretKey());

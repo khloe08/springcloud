@@ -29,12 +29,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public JwtAuthenticationFilter(JwtUtil jwtUtil
                                   ,JwtProperties jwtProperties
                                   , RedisService redisService
-                                  , AuthenticationManager authenticationManager) {
+                                  ) {
         this.jwtUtil = jwtUtil;
         this.jwtProperties = jwtProperties;
         this.redisService = redisService;
-        setAuthenticationManager(authenticationManager);
-      //  setFilterProcessesUrl("/auth/signIn");
+        setFilterProcessesUrl("/auth/signIn");
     }
 
 
@@ -60,10 +59,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     }
 
-  //  @Override
-   // public void setFilterProcessesUrl(String filterProcessesUrl) {
-   //    super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(filterProcessesUrl, "POST"));
-   // }
+    @Override
+   public void setFilterProcessesUrl(String filterProcessesUrl) {
+      super.setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(filterProcessesUrl, "POST"));
+   }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request,

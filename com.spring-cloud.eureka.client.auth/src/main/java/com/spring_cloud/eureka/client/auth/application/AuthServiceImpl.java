@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthServiceImpl {
 
-  private final JwtUtil jwtUtil;
-  private final JwtProperties jwtProperties;
-  private final RedisService redisService;
+
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
@@ -38,5 +36,6 @@ public class AuthServiceImpl {
 
     return "success";
   }
+
 
 }

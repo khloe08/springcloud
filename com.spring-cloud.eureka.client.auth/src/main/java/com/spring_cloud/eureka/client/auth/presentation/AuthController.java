@@ -25,10 +25,12 @@ public class AuthController {
     return ResponseEntity.ok("signUp Success : " + userId);
   }
 
- /* @PostMapping("/signIn")
+/*
+  @PostMapping("/signIn")
   public ResponseEntity<?> createAuthenticationToken(@RequestBody SignInRequest signInRequest){
     String token = authService.signIn(signInRequest.getUsername(), signInRequest.getPassword());
     return ResponseEntity.ok(new AuthResponse(token));
-  }*/
+  }
+*/
 
 }
