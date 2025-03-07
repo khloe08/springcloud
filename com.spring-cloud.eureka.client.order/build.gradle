@@ -38,6 +38,13 @@ dependencies {
 	implementation 'io.micrometer:micrometer-registry-prometheus'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+	//분산추적 micrometer와 zipkin
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.github.openfeign:feign-micrometer'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
+
+
 }
 
 dependencyManagement {
