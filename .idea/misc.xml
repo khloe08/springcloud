@@ -5,6 +5,7 @@
     <file type="web" url="file://$PROJECT_DIR$/com.spring-cloud.client.gateway" />
     <file type="web" url="file://$PROJECT_DIR$/com.spring-cloud.eureka.client.auth" />
     <file type="web" url="file://$PROJECT_DIR$/com.spring-cloud.eureka.client.config" />
+    <file type="web" url="file://$PROJECT_DIR$/com.spring-cloud.eureka.client.order" />
     <file type="web" url="file://$PROJECT_DIR$/com.spring-cloud.eureka.client.product" />
   </component>
   <component name="ProjectRootManager">

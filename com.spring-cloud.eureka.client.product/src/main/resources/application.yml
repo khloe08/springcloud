@@ -34,3 +34,9 @@ management:
     web:
       exposure:
         include: busrefresh   #refresh /bus/refresh 엔드포인트가 활성화되어 POST 요청을 처리
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  tracing:
+    sampling:
+      probability: 1.0
